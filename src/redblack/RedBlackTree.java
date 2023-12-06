@@ -4,7 +4,6 @@ public class RedBlackTree {
     // 레드블랙 트리 구현
     // 추가할 데이터가 기존 데이터 보다 크면 오른쪽, 작으면 왼쪽에 추가
     Node root; // 루트 노드
-    Node temp;
     Node current;  // 현재 노드
 
     public RedBlackTree() {
@@ -26,15 +25,16 @@ public class RedBlackTree {
                 if(current.right == null){
                     current.right = new Node(data,current);
                     break;
+                } else {
+                    current = current.right;
                 }
-                current = current.right;
-            }
-            else{
+            } else if(current.data > data){
                 if(current.left == null) {
                     current.left = new Node(data, current);
                     break;
+                } else {
+                    current = current.left;
                 }
-                current = current.left;
             }
             isComplete(current);   //  데이터 추가하고 레드블랙함수 규칙대로 바꿔줌
         }
@@ -42,7 +42,8 @@ public class RedBlackTree {
 
     // 추가한 노드(current) 를 인수로 받아서 규칙을 만족토록 바꿔준다.
     public void isComplete(Node current) {
-        while (true) {
+        // 추가한 데이터의 부모의 색깔이 빨간색이면 계속 반복
+        while (current.parent!= null && current.parent.color == 1) {
             // 만약에 추가한 노드(current) 와 부모의 노드의 색깔이 같다면
             if(current.color == current.parent.color) {
                 // 만약에 삼촌의 색깔이 빨간색이라면 : recoloring 실시
@@ -53,14 +54,15 @@ public class RedBlackTree {
                     // 만약 조부모가 root 라면 검정색
                     if(current.parent.parent == root) {
                         current.parent.parent.color = 0;
-                    // 그렇지 않으면 빨간색으로 바꾼다.
+                        // 그렇지 않으면 빨간색으로 바꾼다.
                     } else {
                         current.parent.parent.color = 1;
                     }
                 }
                 // 그렇지 않고 만약에 삼촌이 null 이라면 : restructuring 실시
-                else if (current.parent.parent.left == null) {
+                else if (current.parent.parent.left == null || current.parent.parent.right == null) {
                     // 만약 새로 추가한 노드(current) 가 부모노드의 오른쪽 자식인 경우
+                    if(current.parent == current.parent.parent.right );
                     // 그렇지 않고 만약에 부모노드의 왼쪽 자식인 경우
 
                 }
@@ -68,9 +70,29 @@ public class RedBlackTree {
                 else if (current.parent.parent.left.color == 0) {
                     // 만약 새로 추가한 노드(current) 가 부모노드의 오른쪽 자식인 경우
                     if(current == current.parent.right) {
+                        // 부모노드를 왼쪽으로 회전시킨 뒤 부모노드의 왼쪽 자식인 경우의 코드를 그대로 실행한다.
+                        current.parent.parent.left = current;
+                        current.left = current.parent;
+                        if(current == current.parent.left) {
+                            // 부모노드를 검은색
+                            // 조부모 노드를 빨간색으로 칠한다.
+                            current.parent.color = 0;
+                            current.parent.parent.color = 1;
+
+                            // 만약 추가하는 값이 조부모의 부모보다 크다면
+                            if(current.data > current.parent.parent.parent.data) {
+                                // 그다음 조부모 노드를 오른쪽으로 회전시킨다.
+                                current.parent.parent.parent.right = current.parent;
+                                current.parent.right = current.parent.parent;
+                            } else if(current.data < current.parent.parent.parent.data) {
+                                // 그렇지 않고 만약에 작다면
+                                // 그다음 조부모 노드를 오른쪽으로 회전시킨다.
+                                current.parent.parent.parent.left = current.parent;
+                                current.parent.right = current.parent.parent;
+                            }
+                        }
 
                     }
-
                     // 그렇지 않고 만약에 부모노드의 왼쪽 자식인 경우
                     if(current == current.parent.left) {
                         // 부모노드를 검은색
@@ -78,10 +100,18 @@ public class RedBlackTree {
                         current.parent.color = 0;
                         current.parent.parent.color = 1;
 
-                        // 그다음 조부모 노드를 오른쪽으로 회전시킨다.
-
+                        // 만약 추가하는 값이 조부모의 부모보다 크다면
+                        if(current.data > current.parent.parent.parent.data) {
+                            // 그다음 조부모 노드를 오른쪽으로 회전시킨다.
+                            current.parent.parent.parent.right = current.parent;
+                            current.parent.right = current.parent.parent;
+                        } else if(current.data < current.parent.parent.parent.data) {
+                            // 그렇지 않고 만약에 작다면
+                            // 그다음 조부모 노드를 오른쪽으로 회전시킨다.
+                            current.parent.parent.parent.left = current.parent;
+                            current.parent.right = current.parent.parent;
+                        }
                     }
-
                 }
             }
         }

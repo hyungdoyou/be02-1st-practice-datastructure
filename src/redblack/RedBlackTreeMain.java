@@ -9,7 +9,6 @@ public class RedBlackTreeMain {
         rbt.add(30);
         rbt.add(40);
         rbt.add(50);
-        rbt.add(60);
-        TreePrinter.print(rbt.root);
+        TreePrinter2.print(rbt.root, 0);
     }
 }
