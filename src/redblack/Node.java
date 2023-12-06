@@ -1,7 +1,5 @@
 package redblack;
 
-import tree.TreePrinter;
-
 public class Node implements TreePrinter.PrintableNode{
     Integer data;
     Integer color;  // 0 : 검정색 / 1 : 빨간색

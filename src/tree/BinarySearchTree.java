@@ -173,23 +173,6 @@ public class BinarySearchTree {
     // 왼쪽을 기준으로 했을때 : 삭제하는 노드 대신에 왼쪽 서브트리에서 가장 큰 노드로 대체
     // 오른쪽을 기준으로 했을때 : 삭제하는 노드 대신에 오른쪽 서브트리에서 가장 작은 노드로 대체
     public void removeTwo(Integer node) {
-        current = root;
-        while (true) {
-            if(node > current.data) {
-                if(current.right.data == node) {
-
-                }
-            }
-            if(node < current.data) {
-                if(current.left.data == node) {
-                    while(current.left.right != null) {
-                        current.left.right == null
-
-                    }
-                }
-
-            }
-        }
     }
 
 }

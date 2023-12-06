@@ -1,77 +1,87 @@
 package redblack;
 
-import javax.management.NotificationEmitter;
-
 public class RedBlackTree {
-    // 이진 탐색 트리 구현
+    // 레드블랙 트리 구현
     // 추가할 데이터가 기존 데이터 보다 크면 오른쪽, 작으면 왼쪽에 추가
     Node root; // 루트 노드
+    Node temp;
     Node current;  // 현재 노드
+
     public RedBlackTree() {
+        this.current = null;
         this.root = null;
     }
-    // 전위 순회
-    public void preOrder() {
-        System.out.print("전위 순회 : ");
-        this.preOrder(this.root);
-        System.out.println();
-    }
-    public void preOrder(tree.Node node) {
-        if (node != null) {
 
-            // 중간
-            System.out.print(node.data + " ");
-            // 왼쪽
-            if (node.left != null) {
-                preOrder(node.left);
-            }
-            // 오른쪽
-            if(node.right != null) {
-                preOrder(node.right);
-            }
-        }
-    }
     // 데이터 추가 기능
     public void add(Integer data) {
-        current = root;
-        if(root == null) {
-            Node node = new Node(data);
-            root = node;
-            node.color = 0;  // 최초 루트 노드 생성 시 색깔은 검정이므로 별도 지정
-        } else {
-            Node node = new Node(data);
-            while(current != null) {
-                // 만약 추가하려는 data가 current 데이터보다 크다면
-                if(data > current.data) {
-                    // 만약 이동한 current에 데이터가 없으면
-                    if(current.right == null) {
-                        // current의 오른쪽에 새로운 node를 추가한다.
-                        // 만약 current의 색깔이 빨강이라면
-                        if(current.color == 1) {
+        // 만약 root 노드가 없으면 root 노드를 추가해준다.
+        if (root == null) {
+            root = new Node(data, null);
+            root.color = 0;
+            return;
+        }
+        Node current = root;
+        while(true){
+            if(current.data < data){
+                if(current.right == null){
+                    current.right = new Node(data,current);
+                    break;
+                }
+                current = current.right;
+            }
+            else{
+                if(current.left == null) {
+                    current.left = new Node(data, current);
+                    break;
+                }
+                current = current.left;
+            }
+            isComplete(current);   //  데이터 추가하고 레드블랙함수 규칙대로 바꿔줌
+        }
+    }
 
-                        } else {
-                            // 그렇지 않으면 그냥 데이터 추가
-                            current.right = node;
-                            break;
-                        }
-                        // 그렇지 않다면
+    // 추가한 노드(current) 를 인수로 받아서 규칙을 만족토록 바꿔준다.
+    public void isComplete(Node current) {
+        while (true) {
+            // 만약에 추가한 노드(current) 와 부모의 노드의 색깔이 같다면
+            if(current.color == current.parent.color) {
+                // 만약에 삼촌의 색깔이 빨간색이라면 : recoloring 실시
+                if(current.parent.parent.color == 1) {
+                    // 부모와 삼촌의 색깔을 검은색으로 바꾸고
+                    current.parent.color = 0;
+                    current.parent.parent.color = 0;
+                    // 만약 조부모가 root 라면 검정색
+                    if(current.parent.parent == root) {
+                        current.parent.parent.color = 0;
+                    // 그렇지 않으면 빨간색으로 바꾼다.
                     } else {
-                        // current를 오른쪽으로 이동시킨다.
-                        current = current.right;
+                        current.parent.parent.color = 1;
                     }
                 }
-                // 만약 추가하려는 data가 current 데이터보다 작다면
-                else if(data < current.data) {
-                    // 만약 이동한 current에 데이터가 없으면
-                    if(current.left == null) {
-                        // current의 왼쪽에 새로운 node를 추가한다.
-                        current.left = node;
-                        break;
-                        // 그렇지 않다면
-                    } else {
-                        // current를 왼쪽으로 이동시킨다.
-                        current = current.left;
+                // 그렇지 않고 만약에 삼촌이 null 이라면 : restructuring 실시
+                else if (current.parent.parent.left == null) {
+                    // 만약 새로 추가한 노드(current) 가 부모노드의 오른쪽 자식인 경우
+                    // 그렇지 않고 만약에 부모노드의 왼쪽 자식인 경우
+
+                }
+                // 그렇지 않고 만약에 삼촌의 색깔이 검정색 이라면 : restructuring 실시
+                else if (current.parent.parent.left.color == 0) {
+                    // 만약 새로 추가한 노드(current) 가 부모노드의 오른쪽 자식인 경우
+                    if(current == current.parent.right) {
+
                     }
+
+                    // 그렇지 않고 만약에 부모노드의 왼쪽 자식인 경우
+                    if(current == current.parent.left) {
+                        // 부모노드를 검은색
+                        // 조부모 노드를 빨간색으로 칠한다.
+                        current.parent.color = 0;
+                        current.parent.parent.color = 1;
+
+                        // 그다음 조부모 노드를 오른쪽으로 회전시킨다.
+
+                    }
+
                 }
             }
         }
