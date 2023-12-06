@@ -11,7 +11,7 @@ public class BinarySearchTree {
         this.root = null;
     }
 
-    // 추가 기능
+    // 데이터 추가 기능
     public void add(Integer data) {
         current = root;
         if(root == null) {
@@ -50,4 +50,146 @@ public class BinarySearchTree {
             }
         }
     }
+
+    // 전위 순회
+    public void preOrder(Node node) {
+        if (node != null) {
+
+            // 중간
+            System.out.print(node.data + " ");
+
+            // 왼쪽
+            if (node.left != null) {
+                preOrder(node.left);
+            }
+            // 오른쪽
+            if(node.right != null) {
+                preOrder(node.right);
+            }
+        }
+    }
+    // 중위 순회
+    public void inOrder(Node node) {
+        if (node != null) {
+
+            // 왼쪽
+            if (node.left != null) {
+                preOrder(node.left);
+            }
+
+            // 중간
+            System.out.print(node.data + " ");
+
+            // 오른쪽
+            if(node.right != null) {
+                preOrder(node.right);
+            }
+        }
+    }
+    // 후위 순회
+    public void postOrder(Node node) {
+        if (node != null) {
+
+            // 왼쪽
+            if (node.left != null) {
+                preOrder(node.left);
+            }
+            // 오른쪽
+            if(node.right != null) {
+                preOrder(node.right);
+            }
+
+            // 중간
+            System.out.print(node.data + " ");
+        }
+    }
+
+    // 삭제 / 1. 자식 노드가 없는 노드 삭제
+    public void removeNo(Integer node) {
+        current = root;
+        while(true) {
+            if(node > current.data) {
+                if(current.right.data == node) {
+                    current.right = null;
+                    break;
+                } else {
+                    current = current.right;
+                }
+            }
+            if(node < current.data) {
+                if(current.left.data == node) {
+                    current.left = null;
+                    break;
+                } else {
+                    current = current.left;
+                }
+            }
+        }
+    }
+
+    // 삭제 / 2. 자식이 하나인 노드 삭제
+    // 삭제하는 노드 대신에 자식 노드로 대체
+    public void removeOne(Integer node) {
+        current = root;
+        while(true) {
+            if(node > current.data) {
+                if(current.right.data == node) {
+                    if(current.right.right != null) {
+                        current.right = current.right.right;
+                        break;
+                    } else if(current.right.left != null) {
+                        current.right = current.right.left;
+                        break;
+                    }
+                } else if(current.left.data == node) {
+                    if(current.right.right != null) {
+                        current.right = current.right.right;
+                        break;
+                    } else if(current.right.left != null) {
+                        current.right = current.right.left;
+                        break;
+                    }
+                } else {
+                    current = current.right;
+                }
+            }
+            if(node < current.data) {
+                if(current.left.data == node) {
+                    if(current.left.right != null) {
+                        current.left = current.left.right;
+                        break;
+                    } else if(current.left.left != null) {
+                        current.left = current.left.left;
+                        break;
+                    }
+                } else {
+                    current = current.left;
+                }
+            }
+        }
+    }
+
+    // 삭제 / 3. 자식이 두개인 노드 삭제
+    // 왼쪽을 기준으로 했을때 : 삭제하는 노드 대신에 왼쪽 서브트리에서 가장 큰 노드로 대체
+    // 오른쪽을 기준으로 했을때 : 삭제하는 노드 대신에 오른쪽 서브트리에서 가장 작은 노드로 대체
+    public void removeTwo(Integer node) {
+        current = root;
+        while (true) {
+            if(node > current.data) {
+                if(current.right.data == node) {
+
+                }
+            }
+            if(node < current.data) {
+                if(current.left.data == node) {
+                    while(current.left.right != null) {
+                        current.left.right == null
+
+                    }
+                }
+
+            }
+        }
+    }
+
 }
