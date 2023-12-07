@@ -1,13 +1,22 @@
-package redblack;
+package redblack2;
 
 public class Node implements TreePrinter.PrintableNode{
     Integer data;
-    Integer color;  // 0 : 검정색 / 1 : 빨간색
     Node left;
     Node right;
-
     Node parent;
+    boolean color = true;
+    public Node(Integer data,Node parent) {
+        this.data = data;
+        this.parent=parent;
 
+        if(data != null){
+            left = new Node(null,this);
+            left.color = false;
+            right = new Node(null,this);
+            right.color = false;
+        }
+    }
     @Override
     public TreePrinter.PrintableNode getLeft() {
         return this.left;
@@ -20,14 +29,12 @@ public class Node implements TreePrinter.PrintableNode{
 
     @Override
     public String getText() {
-        return "["+data+"]";
+        return "["+data+"]" +"[" + color + "]";
     }
 
-    public Node(Integer data, Node parent) {
+    public Node(Integer data) {
         this.data = data;
-        this.color = 1;   // 노드 추가 시마다 노드의 색깔은 빨강
         this.left = null;
         this.right = null;
-        this.parent = parent;
     }
 }

@@ -1,4 +1,6 @@
-package redblack;
+package redblack2;
+
+
 
 public class RedBlackTreeMain {
     public static void main(String[] args) {
@@ -9,6 +11,9 @@ public class RedBlackTreeMain {
         rbt.add(30);
         rbt.add(40);
         rbt.add(50);
-        TreePrinter2.print(rbt.root, 0);
+        rbt.add(25);
+        rbt.add(37);
+        TreePrinter.print(rbt.root);
+
     }
 }
