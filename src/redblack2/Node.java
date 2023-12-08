@@ -32,9 +32,4 @@ public class Node implements TreePrinter.PrintableNode{
         return "["+data+"]" +"[" + color + "]";
     }
 
-    public Node(Integer data) {
-        this.data = data;
-        this.left = null;
-        this.right = null;
-    }
 }
