@@ -1,56 +1,136 @@
 package heap;
 
+import org.w3c.dom.ls.LSOutput;
+
 public class Heap {
-    // 힙 정렬 구현
-    // 출력 결과 : 1회전 시 마다 배열 결과 출력 및 트리 형태 출력
-    // 오름차순 ( 최소힙 트리 ) 또는 내림차순 ( 최대 힙 트리 ) 결정
-    // 왼쪽 자식 : 부모 인덱스 * 2 , 오른쪽 자식 : 부모 인덱스 * 2 + 1
-    // 삭제한 데이터 : 새로운 인덱스 배열에 삽입
-    // 1번 삭제할때마다 회전 수 1증가
 
-    Integer[] arr;  // 최초 데이터를 담을 배열
-    Integer[] resultArr;  // 최소 또는 최대힙 정렬을 통해 정렬한 결과를 차례로 담을 배열
+    Integer[] arr;  // 데이터를 저장할 배열
+    Integer[] resultArr;  // 최소힙 정렬을 통해 정렬한 결과를 저장할 배열
 
-    // 배열에 데이터 삽입
+    public Heap(Integer length) {
+        this.arr = new Integer[length];
+        this.resultArr = new Integer[length-1];
+    }
+
+    // 최소힙 트리 데이터 삽입 메서드
     // 최소힙 트리 일 경우 : 부모가 자식보다 작아야된다. (root 데이터 : 가장 작음)
-    // 최대힙 트리 일 경우 : 부모가 자식보다 커야된다.   (root 데이터 : 가장 큼)
-
-    // 최소 힙 트리 기준 데이터 삽입
-    Integer num;
+    Integer num;  // 데이터를 삽입할 때 인덱스 번호를 저장할 변수
     public void add(Integer data) {
-        arr[0] = null;
-        // 만약 배열의 0번 인덱스가 null 이라면
-        if(arr[1] == null)  {
-            // 0번 인덱스에 새로운 데이터 저장
-            arr[1] = data;
-        // 그렇지 않으면,
-        } else {
+        // 만약 0번 인덱스에 데이터가 없으면
+        if (this.arr[0] == null) {
+            // 0번 인덱스에 데이터를 삽입한다.(-1)  이것은 -INF 값이다.
+            this.arr[0] = data;
+        }
+        // 그렇지 않으면
+        else {
             // 데이터를 다음 인덱스에 추가
-            for(int i=2; i<arr.length; i++) {
-                if(arr[i] == null) {
-                    arr[i] = data;
+            for(int i=1; i<this.arr.length; i++) {
+                if (this.arr[i] == null) {
+                    this.arr[i] = data;
                     this.num = i;
-                }
-                // 크기 비교 (1번 인덱스 부터 추가한 인덱스 번호까지만 비교)
-                while (num == 1){
-                    int temp = 0;
-                    if(arr[num/2] > arr[num]) {
-                        arr[num/2] = temp;
-                        arr[num/2] = arr[num];
-                        arr[num] = temp;
+                    // 크기 비교 (1번 인덱스 부터 추가한 인덱스 번호까지만 비교)
+                    while (this.num != 0) {
+                        int temp = 0;
+                        if (this.arr[num / 2] > this.arr[num]) {
+                            temp = this.arr[num / 2];
+                            this.arr[num / 2] = this.arr[num];
+                            this.arr[num] = temp;
+                        }
+                        this.num = num / 2;
                     }
-                    num = num / 2;
+                    break;
                 }
             }
         }
     }
 
-    // 배열에서 데이터 삭제
-    public void delete() {
-        // 구성이 끝난 상태에서 배열의 1번 인덱스를 출력하여 결과 출력 배열(resultArr) 에 데이터를 삽입하고
-        // 1번 인덱스를 배열의 마지막 인덱스로 바꾸고, 마지막 인덱스는 null 로 값 변경
-        //
+    // 데이터 정렬 메서드
+    public void sort() {
+        // 구성이 끝난 상태에서 배열의 0번 인덱스를 출력하여 결과 출력 배열(resultArr) 에 데이터를 삽입하고
+        // 0번 인덱스를 배열의 마지막 인덱스로 바꾸고, 마지막 인덱스는 null 로 값 변경
+        // 배열의 제일 첫번째 데이터를 결과 배열에 저장한다.
+        Integer last = this.arr.length-1;
+        Integer temp = 0;
+        Integer cnt = 1;
 
+        for(int i=0; i<this.resultArr.length; i++) {
+            Integer first = 1;
+            // 만약 정렬 배열에 인덱스가 null 이라면
+            if(this.resultArr[i] == null) {
+                // 해당 인덱스에 arr 배열의 1번째 인덱스 데이터를 삽입한다.
+                this.resultArr[i] = this.arr[first];
+
+                // 삽입 후 arr 배열의 1번째 인덱스를 arr 배열의 마지막인덱스로 바꾼다.
+                this.arr[first] = this.arr[last];
+                // 마지막 인덱스는 null 로 바꾼다.
+                this.arr[last] = null;
+                // 마지막 인덱스 번호를 1뺀다.
+                last = last - 1;
+                // 바꾼뒤 자식들과 대소비교를 통해 만약 왼쪽, 오른쪽 자식중에서 제일 작은 자식과 바꾼다.
+                // 먼저 왼쪽 자식
+                while (true) {
+                    if(first*2+1 >= this.arr.length) {
+                        break;
+                    }
+                    if(this.arr[first*2+1] == null && this.arr[first*2] == null) {
+                        break;
+                    } else if(this.arr[first*2+1] == null && this.arr[first*2] != null) {
+                        if(this.arr[first] > this.arr[first*2]) {
+                            temp = this.arr[first];
+                            this.arr[first] = this.arr[first*2];
+                            this.arr[first*2] = temp;
+                            break;
+                        } else {
+                            break;
+                        }
+                    } else if(this.arr[first*2 + 1] != null && this.arr[first*2] != null) {
+
+                        // 만약 왼쪽 자식 데이터가 오른쪽 자식 데이터보다 크다면
+                        if(this.arr[first*2] > this.arr[(first*2) + 1]) {
+                            // 만약 1번째 데이터가 오른쪽 자식 데이터보다 크다면 두개를 바꾼다.
+                            if(this.arr[first] > this.arr[first*2 + 1]) {
+                                temp = this.arr[first];
+                                this.arr[first] = this.arr[first*2 + 1];
+                                this.arr[first*2 + 1] = temp;
+                                first = (first*2 + 1);
+                            } else {
+                                break;
+                            }
+                        }
+                        // 그렇지 않으면
+                        else {
+                            // 1번째 데이터와 왼쪽 자식 데이터와 크기를 비교한다.
+                            // 만약 1번째 데이터가 오른쪽 자식 데이터보다 크다면 두개를 바꾼다.
+                            if(this.arr[first] > this.arr[first*2]) {
+                                temp = this.arr[first];
+                                this.arr[first] = this.arr[first*2];
+                                this.arr[first*2] = temp;
+                                first = first*2;
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                }
+                System.out.print(cnt +" 회전 결과 : ");
+                for(int j=1; j<this.arr.length; j++) {
+                    System.out.print(arr[j] + " ");
+                }
+                System.out.println();
+            }
+            cnt++;
+        }
+        System.out.print("최종 정렬 결과 : ");
+        for(int k=0; k<this.resultArr.length; k++) {
+            System.out.print(this.resultArr[k] + " ");
+        }
     }
 
+    // 배열 출력 메서드
+    public void printHeap() {
+        System.out.print("최초 데이터 삽입이 끝난 결과 : ");
+        for(int i=1; i<this.arr.length; i++) {
+            System.out.print(this.arr[i] + " ");
+        }
+    }
 }

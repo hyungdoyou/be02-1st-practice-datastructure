@@ -8,14 +8,34 @@ package heap;
 
 public class HeapMain {
     public static void main(String[] args) {
-        Heap heap = new Heap();
-        heap.arr[0] = 0;
-        for(int i=1; i<11; i++) {
-            Integer randNum = (int)(Math.random()*100);
-            heap.add(randNum);
+        Integer randNum;
+        Boolean flag = true;
+        Heap heap = new Heap(11);
+
+        heap.add(-1);
+
+        while(flag) {
+            for(int i=1; i<heap.arr.length; i++) {
+                randNum = (int)(Math.random()*100)+1;
+                heap.add(randNum);
+
+                for(int j=1; j<i; j++) {
+                    if(heap.arr[i] == heap.arr[j]) {
+                        heap.arr[j] = (int)(Math.random()*100)+1;
+                    }
+                }
+            }
+            for(int i=1; i<heap.arr.length; i++) {
+                for(int j=1; j<i; j++) {
+                    if(heap.arr[i] != heap.arr[j]) {
+                        flag= false;
+                    }
+                }
+            }
         }
-        for(int i=0; i<11; i++) {
-            System.out.print(heap.arr[i] + " ");
-        }
+
+        heap.printHeap();
+        System.out.println();
+        heap.sort();
     }
 }
