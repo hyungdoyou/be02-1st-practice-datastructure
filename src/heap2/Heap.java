@@ -1,4 +1,4 @@
-package heap;
+package heap2;
 
 import org.w3c.dom.ls.LSOutput;
 
@@ -18,7 +18,7 @@ public class Heap {
     public void add(Integer data) {
         // 만약 0번 인덱스에 데이터가 없으면
         if (this.arr[0] == null) {
-            // 0번 인덱스에 데이터를 삽입한다.(-1)  이것은 -INF 값이다.
+            // 0번 인덱스에 데이터를 삽입한다.(-1) 이값은 힙의 구성을 편하게 하기위한 값으로 건들지 않는다.
             this.arr[0] = data;
         }
         // 그렇지 않으면
@@ -31,7 +31,7 @@ public class Heap {
                     // 크기 비교 (1번 인덱스 부터 추가한 인덱스 번호까지만 비교)
                     while (this.num != 0) {
                         int temp = 0;
-                        if (this.arr[num / 2] > this.arr[num]) {
+                        if (this.arr[num / 2] < this.arr[num]) {
                             temp = this.arr[num / 2];
                             this.arr[num / 2] = this.arr[num];
                             this.arr[num] = temp;
@@ -53,7 +53,7 @@ public class Heap {
         Integer temp = 0;
         Integer cnt = 1;
 
-        for(int i=0; i<this.resultArr.length; i++) {
+        for(int i=this.resultArr.length-1; i>=0; i--) {
             Integer first = 1;
             // 만약 정렬 배열에 인덱스가 null 이라면
             if(this.resultArr[i] == null) {
@@ -75,7 +75,7 @@ public class Heap {
                     if(this.arr[first*2+1] == null && this.arr[first*2] == null) {
                         break;
                     } else if(this.arr[first*2+1] == null && this.arr[first*2] != null) {
-                        if(this.arr[first] > this.arr[first*2]) {
+                        if(this.arr[first] < this.arr[first*2]) {
                             temp = this.arr[first];
                             this.arr[first] = this.arr[first*2];
                             this.arr[first*2] = temp;
@@ -85,10 +85,10 @@ public class Heap {
                         }
                     } else if(this.arr[first*2 + 1] != null && this.arr[first*2] != null) {
 
-                        // 만약 왼쪽 자식 데이터가 오른쪽 자식 데이터보다 크다면
-                        if(this.arr[first*2] > this.arr[(first*2) + 1]) {
-                            // 만약 1번째 데이터가 오른쪽 자식 데이터보다 크다면 두개를 바꾼다.
-                            if(this.arr[first] > this.arr[first*2 + 1]) {
+                        // 만약 오른쪽 자식 데이터가 왼쪽 자식 데이터보다 크다면
+                        if(this.arr[first*2] < this.arr[(first*2) + 1]) {
+                            // 만약 1번째 데이터가 오른쪽 자식 데이터보다 작다면 두개를 바꾼다.
+                            if(this.arr[first] < this.arr[first*2 + 1]) {
                                 temp = this.arr[first];
                                 this.arr[first] = this.arr[first*2 + 1];
                                 this.arr[first*2 + 1] = temp;
@@ -100,8 +100,8 @@ public class Heap {
                         // 그렇지 않으면
                         else {
                             // 1번째 데이터와 왼쪽 자식 데이터와 크기를 비교한다.
-                            // 만약 1번째 데이터가 오른쪽 자식 데이터보다 크다면 두개를 바꾼다.
-                            if(this.arr[first] > this.arr[first*2]) {
+                            // 만약 1번째 데이터가 왼쪽 자식 데이터보다 작다면 두개를 바꾼다.
+                            if(this.arr[first] < this.arr[first*2]) {
                                 temp = this.arr[first];
                                 this.arr[first] = this.arr[first*2];
                                 this.arr[first*2] = temp;
