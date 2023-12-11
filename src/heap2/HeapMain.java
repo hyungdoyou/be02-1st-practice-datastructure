@@ -1,11 +1,5 @@
 package heap2;
 
-// 개념 설명
-// 각 클래스 코드 설명
-// 각 회차가 출력이 되게 동작 설명
-// 배열 출력 후 트리 구조 출력 까지
-// 10개 데이터 랜덤 생성 후 배열에 저장
-
 public class HeapMain {
     public static void main(String[] args) {
         Integer randNum;
