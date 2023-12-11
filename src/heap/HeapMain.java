@@ -12,7 +12,8 @@ public class HeapMain {
         Boolean flag = true;
         Heap heap = new Heap(11);
 
-        heap.add(-1);
+        // 0번 인덱스에 null을 넣어준다.
+        heap.add(null);
 
         while(flag) {
             for(int i=1; i<heap.arr.length; i++) {
@@ -33,9 +34,12 @@ public class HeapMain {
                 }
             }
         }
-
+        // 최초 모든 데이터가 들어간 결과
         heap.printHeap();
+
         System.out.println();
+
+        // 정렬된 결과
         heap.sort();
     }
 }

@@ -4,20 +4,19 @@ import org.w3c.dom.ls.LSOutput;
 
 public class Heap {
 
-    Integer[] arr;  // 데이터를 저장할 배열
+    Integer[] arr;  // 최초 데이터를 저장할 배열
     Integer[] resultArr;  // 최소힙 정렬을 통해 정렬한 결과를 저장할 배열
 
     public Heap(Integer length) {
         this.arr = new Integer[length];
         this.resultArr = new Integer[length-1];
     }
-
     // 최소힙 트리 데이터 삽입 메서드
     // 최소힙 트리 일 경우 : 부모가 자식보다 작아야된다. (root 데이터 : 가장 작음)
     Integer num;  // 데이터를 삽입할 때 인덱스 번호를 저장할 변수
     public void add(Integer data) {
         // 만약 0번 인덱스에 데이터가 없으면
-        if (this.arr[0] == null) {
+        if (this.arr[0] != null) {
             // 0번 인덱스에 데이터를 삽입한다.(-1)  이것은 -INF 값이다.
             this.arr[0] = data;
         }
@@ -29,14 +28,21 @@ public class Heap {
                     this.arr[i] = data;
                     this.num = i;
                     // 크기 비교 (1번 인덱스 부터 추가한 인덱스 번호까지만 비교)
-                    while (this.num != 0) {
+                    while (true) {
+                        if(this.num/2 == 0) {
+                            break;
+                        }
                         int temp = 0;
                         if (this.arr[num / 2] > this.arr[num]) {
                             temp = this.arr[num / 2];
                             this.arr[num / 2] = this.arr[num];
                             this.arr[num] = temp;
                         }
-                        this.num = num / 2;
+                        if(this.num/2 == 1) {
+                            break;
+                        } else {
+                            this.num = num / 2;
+                        }
                     }
                     break;
                 }
